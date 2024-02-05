@@ -1,0 +1,16 @@
+<h1>Test solving</h1>
+<div class="d-flex justify-content-end timer_container">
+    <p class="timer border border-success rounded p-1">{{ hours }}:{{ minutes }}:{{ seconds }}</p>
+</div>
+<!-- ready tests template -->
+<form action="" (ngSubmit) = "onSubmit()">
+    <div class="container-fluid border border-sedondary rounded mb-3 pt-1 pe-3 pb-2 ps-3" *ngFor="let test of tests; let i = index; trackBy: onTrackBy">
+        <h2>{{ test.question }}</h2>
+        <div *ngFor="let answer of test.answers; let j = index; trackBy: onTrackBy" class="d-flex align-items-center">
+            <input type="radio" name="answer{{i}}" [attr.question-id]="i" id="answer_id_{{i}}_{{j}}" value="{{j}}" (change)="onRadioChange($event)" class="form-check-input me-2">
+            <label for="answer_id_{{i}}_{{j}}">{{ answer }}</label>
+        </div>
+    </div>
+    <p class="text-danger" id="error">{{ error }}</p>
+    <button type="submit" class="btn btn-success mt-2">Finish test</button>
+</form>

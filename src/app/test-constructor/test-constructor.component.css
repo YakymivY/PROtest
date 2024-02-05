@@ -1,0 +1,45 @@
+.constructor {
+   padding: 1em 2em;
+}
+::ng-deep .answer_input {
+    width: 100%;
+}
+ol {
+    list-style-position: inside;
+}
+.plus {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.plus img {
+    width: 20px;
+}
+.tick {
+    width: 20px;
+}
+
+/*MODAL*/
+.modal_window {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(128, 128, 128, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+.modal__form {
+    background-color: white;
+    border-radius: 15px;
+    padding: 15px 20px;
+}
+.modal__input, .modal__number {
+    width: 100%;
+}

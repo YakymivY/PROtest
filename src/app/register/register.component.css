@@ -1,0 +1,22 @@
+.register {
+    width: 100%;
+    height: 100vh;
+}
+form {
+    width: 100%;
+}
+.form__container {
+    width: 100%;
+}
+.register__label {
+    width: 30%;
+}
+.register__input {
+    width: 70%;
+}
+a {
+    transition: 0.3s;
+}
+.single {
+    color: rgb(64, 133, 88);
+}

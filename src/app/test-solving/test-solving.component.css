@@ -1,0 +1,9 @@
+.timer {
+    display: block;
+    background-color: white;
+    text-align: end;
+}
+.timer_container {
+    position: sticky;
+    top: 0;
+}

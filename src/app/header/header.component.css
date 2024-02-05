@@ -1,0 +1,11 @@
+.logout_img {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+header {
+    height: 60px;
+}
+.single {
+    color: black;
+}

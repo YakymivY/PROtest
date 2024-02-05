@@ -1,0 +1,31 @@
+<div class="d-flex justify-content-center align-items-center register">
+    <div class="col-lg-4 col-md-6 register__container d-flex flex-column align-items-center bg-light rounded p-xl-5 p-md-4 p-sm-3 p-3">
+
+        <h1>Regis<span class="single">t</span>er</h1>
+
+        <form action="" class="d-flex flex-column align-items-center" (ngSubmit) = "onSubmit()">
+            <div class="d-flex justify-content-between form__container mt-2">
+                <label for="name" class="register__label">Name</label>
+                <input type="text" class="register__input" id="name" name="name" [(ngModel)]="name" reauired>
+            </div>
+            <div class="d-flex justify-content-between form__container mt-2">
+                <label for="email" class="register__label">Email</label>
+                <input type="email" class="register__input" id="email" name="email" #emailInput="ngModel" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" [(ngModel)]="email">
+            </div>
+            <div class="d-flex justify-content-between form__container mt-2">
+                <label for="password" class="register__label">Password</label>
+                <input type="password" class="register__input" id="password" name="password" [(ngModel)]="password" reauired>
+            </div>
+            <div class="d-flex justify-content-between form__container mt-2">
+                <label for="confirm" class="register__label">Confirm</label>
+                <input type="password" class="register__input" id="confirm" name="confirm" [(ngModel)]="confirm" reauired>
+            </div>
+            <p class="text-danger">{{ error }}</p>
+            <p class="text-danger" *ngIf="emailInput.invalid && emailInput.touched">Incorrect email format</p>
+            <button type="submit" class="btn btn-success mt-4" [disabled]="emailInput.invalid && emailInput.touched">Register</button>
+        </form>
+
+        <a href="/login" class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover mt-1">Login</a>
+
+    </div>
+</div>

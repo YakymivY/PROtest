@@ -1,0 +1,16 @@
+<app-header></app-header>
+
+<div class="container-fluid bg-light rounded d-flex flex-column justify-content-between p-3 mt-2" *ngFor="let discipline of disciplines; let i = index; trackBy: onTrackBy">
+    <h2 class="m-0">{{ discipline.name }}</h2>
+    <div class="bg-white rounded d-flex justify-content-between align-items-center p-2 mt-2" *ngFor="let test of tests[i]; let j = index; trackBy: onTrackBy">
+        <p class="testname m-0">{{ test.name }}</p>
+        <div class="d-flex align-items-center">
+            <p *ngIf="idInArray(solved, test._id)" class="m-0 me-3">Result: {{ getMark(solved, test._id) }}%</p>
+            <button *ngIf="idInArray(solved, test._id)" class="btn btn-outline-success" disabled>Solved</button>
+            <button *ngIf="!idInArray(solved, test._id)" class="btn btn-outline-success" [attr.disc-id]="i" [attr.test-id]="j" (click)="startTest($event)">Start</button>
+        </div>
+    </div>
+    <!-- <div class="d-flex align-items-center justify-content-end mt-2">
+        <button class="btn btn-success" [attr.discipline-id]="i">Marks</button>
+    </div> -->
+</div>
