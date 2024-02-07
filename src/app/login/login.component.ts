@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -15,9 +15,9 @@ export class LoginComponent {
   error: string = '';
   userData: any;
 
-  constructor(private service: AuthService, private router: Router, private formBuilder: FormBuilder) {}
+  constructor(private service: AuthService, private router: Router, private formBuilder: FormBuilder) { }
 
-  onSubmit () {
+  onSubmit() {
     this.service.onLogin(this.email, this.password).subscribe(
       (response: any) => {
         if (response.status === 'incorrect') {

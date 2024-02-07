@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { TestConstructorService } from 'src/app/test-constructor.service';
+import { TestConstructorService } from 'src/app/services/test-constructor.service';
 import { Router } from '@angular/router';
 
 interface Question {
@@ -32,7 +32,7 @@ export class TestConstructorComponent {
 
   testTime: number;
 
-  onTrackBy (index: any) {
+  onTrackBy(index: any) {
     return index;
   }
 
@@ -47,14 +47,14 @@ export class TestConstructorComponent {
 
   onSubmit() {
     if (this.question) {
-      if(this.correctIndex) {
+      if (this.correctIndex) {
         if (this.inputValues.some(element => element == '')) {
           this.error = "Please, enter all answers.";
         } else {
           this.tests.push({ question: this.question, answers: [...this.inputValues], correct: parseInt(this.correctIndex) });
 
           this.finish = true;
-          
+
           //form reset
           this.question = '';
           this.inputValues = [''];
@@ -71,11 +71,11 @@ export class TestConstructorComponent {
     }
   }
 
-  async showModel () {
+  async showModel() {
     this.setName = true;
   }
 
-  async finishTest () {
+  async finishTest() {
     if (this.testName && this.testTime) {
       if (this.testTime < 1) {
         this.nameError = "Incorrect time input";

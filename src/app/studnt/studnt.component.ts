@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DisciplineService } from '../discipline.service';
-import { AuthService } from '../auth.service';
+import { DisciplineService } from '../services/discipline.service';
+import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -29,7 +29,6 @@ export class StudntComponent {
 
     this.service.loadDisciplines("student").subscribe(
       (response: any) => {
-        console.log("success", response);
         this.disciplines = response.disciplines;
         this.tests = response.tests;
         this.solved = response.solved;
@@ -44,12 +43,12 @@ export class StudntComponent {
     return index;
   }
 
-  idInArray (array: [], value: any) {
+  idInArray(array: [], value: any) {
     const exists = array.some(innerArray => innerArray[0] == value);
     return exists;
   }
 
-  getMark (array: [], value: any) {
+  getMark(array: [], value: any) {
     const found = array.find(innerArray => innerArray[0] == value);
     if (found) {
       return found[1];
@@ -66,9 +65,9 @@ export class StudntComponent {
       console.log("test is already solved");
     } else {
       localStorage.setItem('testToLoad', test);
-    this.router.navigate(['/solving']);
+      this.router.navigate(['/solving']);
     }
   }
-  
+
 }
 

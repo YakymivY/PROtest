@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TestSolvingService } from 'src/app/test-solving.service';
+import { TestSolvingService } from 'src/app/services/test-solving.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   templateUrl: './test-solving.component.html',
   styleUrls: ['./test-solving.component.css']
 })
-export class TestSolvingComponent implements OnInit{
+export class TestSolvingComponent implements OnInit {
 
   tests: any = [];
   loadId: string | null = '';
@@ -27,9 +27,9 @@ export class TestSolvingComponent implements OnInit{
 
   error: string = '';
 
-  constructor(private service: TestSolvingService, private router: Router) {}
+  constructor(private service: TestSolvingService, private router: Router) { }
 
-  ngOnInit () {
+  ngOnInit() {
     const jsonString = localStorage.getItem('userData');
     if (jsonString) {
       this.userData = JSON.parse(jsonString);
@@ -37,24 +37,29 @@ export class TestSolvingComponent implements OnInit{
       console.log("ERROR: could not get data from local storage");
     }
     this.loadId = localStorage.getItem('testToLoad');
-    this.service.loadTest(this.loadId).subscribe(
-      (response:any) => {
-        this.tests = response.tests;
-        this.minutes = response.time; /////////
-        this.testId = response.id;
-      }, 
-      error => {
-        console.log("error", error);
-      }
-    );
-    this.startTimer();
-  }  
+    if (this.loadId) {
+      this.service.loadTest(this.loadId).subscribe(
+        (response: any) => {
+          this.tests = response.tests;
+          this.minutes = response.time; /////////
+          this.testId = response.id;
+          this.startTimer();
+        },
+        error => {
+          console.log("error", error);
+        }
+      );
+    } else {
+      console.log("ERROR: could not load a test");
+    }
 
-  onTrackBy (index: any) {
+  }
+
+  onTrackBy(index: any) {
     return index;
   }
 
-  startTimer () {
+  startTimer() {
     this.timer = setInterval(() => {
       if (this.seconds > 0) {
         this.seconds--;
@@ -79,7 +84,7 @@ export class TestSolvingComponent implements OnInit{
     }, 1000);
   }
 
-  finishTest () {
+  finishTest() {
     this.done = true;
     for (let j = 0; j < this.tests.length; j++) {
       if (this.userAnswers[j] == this.tests[j].correct) {
@@ -96,7 +101,7 @@ export class TestSolvingComponent implements OnInit{
     this.router.navigate(['/student']);
   }
 
-  onRadioChange (event: any) {
+  onRadioChange(event: any) {
     if (event.target.checked) {
       let testNum = event.target.getAttribute("question-id");
       let answerNum = event.target.value;
@@ -105,7 +110,7 @@ export class TestSolvingComponent implements OnInit{
     }
   }
 
-  onSubmit () {
+  onSubmit() {
     for (let i = 0; i < this.tests.length; i++) {
       if (!this.userAnswers[i]) {
         this.error = "Please, choose all the answers.";

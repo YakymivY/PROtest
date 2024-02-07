@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from './environment';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from '../environment';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,8 @@ export class DisciplineService {
     }
     const id = this.userData._id;
 
-    return this.http.post(this.path + "/api/get-discipline", { id, role });
+    let params = new HttpParams().set('id', id).set('role', role);
+    return this.http.get(this.path + "/api/get-discipline", { params });
   }
 
   pushDiscipline(name: string) {

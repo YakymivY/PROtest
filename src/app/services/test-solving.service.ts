@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from './environment';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from '../environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +11,9 @@ export class TestSolvingService {
 
   constructor(private http: HttpClient) { }
 
-  loadTest(id: string | null) {
-    return this.http.post(this.path + '/api/solve', { id });
+  loadTest(id: string) {
+    let params = new HttpParams().set('id', id);
+    return this.http.get(this.path + '/api/solve', { params });
   }
 
   pushAnswers(userId: string, testId: any, answers: number[], mark: number) {

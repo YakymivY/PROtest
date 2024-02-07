@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DisciplineService } from '../discipline.service';
-import { AuthService } from '../auth.service';
+import { DisciplineService } from '../services/discipline.service';
+import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -71,7 +71,7 @@ export class TeacherComponent implements OnInit {
           if (response["status"] === "error") {
             alert("Sorry, there is already a discipline with this name. Please, select the other one");
           } else {
-            this.disciplines.push({name: this.disciplineName, tests: [], students: [], teacher: this.userData._id});
+            this.disciplines.push({ name: this.disciplineName, tests: [], students: [], teacher: this.userData._id });
           }
         },
         error => {
@@ -153,7 +153,7 @@ export class TeacherComponent implements OnInit {
 
   //marks
 
-  showMarks (event: any) {
+  showMarks(event: any) {
     const disciplineId = event.target.getAttribute('d-id');
     const testId = event.target.getAttribute('t-id');
     this.boolShowMarks = true;
@@ -161,11 +161,11 @@ export class TeacherComponent implements OnInit {
 
   }
 
-  closeAddStudent () {
+  closeAddStudent() {
     this.boolAddStudent = false;
   }
 
-  closeAddUser () {
+  closeAddUser() {
     this.boolAddUser = false;
   }
 

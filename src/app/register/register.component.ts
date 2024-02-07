@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AuthService } from 'src/app/auth.service';
-import { Router } from '@angular/router'; 
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -19,9 +19,9 @@ export class RegisterComponent {
   error: string = '';
 
 
-  constructor(private service: AuthService, private router: Router) {}
+  constructor(private service: AuthService, private router: Router) { }
 
-  onSubmit () {
+  onSubmit() {
     if (!this.name) {
       this.error = "Please, input your name";
     } else {
