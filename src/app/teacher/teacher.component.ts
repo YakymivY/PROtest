@@ -47,7 +47,6 @@ export class TeacherComponent implements OnInit {
 
     this.service.loadDisciplines("teacher").subscribe(
       (response: any) => {
-        console.log("success", response);
         this.disciplines = response.disciplines;
         this.students = response.students;
         this.tests = response.tests;

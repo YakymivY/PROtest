@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TestConstructorService } from 'src/app/services/test-constructor.service';
 import { Router } from '@angular/router';
 
@@ -14,7 +14,7 @@ interface Question {
   styleUrls: ['./test-constructor.component.css']
 })
 
-export class TestConstructorComponent {
+export class TestConstructorComponent implements OnInit {
 
   constructor(private service: TestConstructorService, private router: Router) { }
 
@@ -31,6 +31,13 @@ export class TestConstructorComponent {
   boolAdd: boolean = false;
 
   testTime: number;
+
+  ngOnInit(): void {
+    const testsString = localStorage.getItem('savedTests');
+    if (testsString) this.tests = JSON.parse(testsString);
+
+    if (this.tests.length > 0) this.finish = true;
+  }
 
   onTrackBy(index: any) {
     return index;
@@ -61,6 +68,10 @@ export class TestConstructorComponent {
           this.correctIndex = '';
           this.error = '';
           this.boolAdd = false;
+
+          //save test to localstorage
+          const testsString = JSON.stringify(this.tests);
+          localStorage.setItem('savedTests', testsString);
         }
       }
       else {
@@ -71,7 +82,16 @@ export class TestConstructorComponent {
     }
   }
 
-  async showModel() {
+  deleteTest(i: number) {
+    this.tests.splice(i, 1);
+
+    //save test to localstorage
+    const testsString = JSON.stringify(this.tests);
+    localStorage.setItem('savedTests', testsString);
+  }
+
+  async showModel(event: Event) {
+    event.preventDefault();
     this.setName = true;
   }
 
@@ -81,8 +101,22 @@ export class TestConstructorComponent {
         this.nameError = "Incorrect time input";
       } else {
         const discipline = localStorage.getItem('disciplineId');
-        this.service.saveTest(this.tests, this.testName, this.testTime, discipline);
-        this.setName = false;
+        if (discipline) {
+          this.service.findTestname(this.testName, discipline).subscribe(
+            (foundTest) => {
+              if (!foundTest) {
+                this.service.saveTest(this.tests, this.testName, this.testTime, discipline);
+                localStorage.removeItem('savedTests');
+                this.setName = false;
+              } else {
+                this.nameError = "There is the test with this name.";
+              }
+            },
+            (error) => {
+              console.log('ERROR: ', error);
+            }
+          );
+        }
       }
     } else {
       this.nameError = "Please, enter all values";
