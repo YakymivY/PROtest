@@ -26,11 +26,19 @@ export class DisciplineService {
   }
 
   pushDiscipline(name: string) {
-
     return this.http.post(this.path + "/api/add-discipline", { name });
+  }
+
+  deleteDiscipline(id: string) {
+    let params = new HttpParams().set('id', id);
+    return this.http.delete(this.path + '/api/delete-discipline', { params });
   }
 
   addStudent(email: string, disciplineId: any) {
     return this.http.post(this.path + "/api/add-student", { email, disciplineId });
+  }
+
+  removeStudent(discipline: string, student: string) {
+    return this.http.post(this.path + "/api/remove-student", { discipline, student });
   }
 }

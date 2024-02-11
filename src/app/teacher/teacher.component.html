@@ -4,31 +4,55 @@
     <button class="new_discipline_button btn btn-success ms-2" (click)="addDiscipline()">+ Add discipline</button>
     <button class="add_user_button btn btn-success ms-2" (click)="addUser()">Register student</button>
 </div>
-<div class="container-fluid bg-light rounded d-flex flex-column p-3 mt-2" *ngFor="let discipline of disciplines; let i = index; trackBy: onTrackBy">
+<div class="container-fluid bg-light rounded d-flex flex-column p-3 mt-2"
+    *ngFor="let discipline of disciplines; let i = index; trackBy: onTrackBy">
     <h2 class="m-0">{{ discipline.name }}</h2>
-    <div class="bg-white rounded d-flex justify-content-between align-items-center p-2 mt-2" *ngFor="let test of tests[i]; let j = index; trackBy: onTrackBy">
+    <div class="bg-white rounded d-flex justify-content-between align-items-center p-2 mt-2"
+        *ngFor="let test of tests[i]; let j = index; trackBy: onTrackBy">
         <p class="testname m-0">{{ test.name }}</p>
         <!-- <button class="btn btn-outline-success" [attr.d-id]="i" [attr.t-id]="j" (click)="showMarks($event)">Show marks</button> -->
     </div>
     <hr>
-    <p class="text-secondary m-0 ms-2" *ngFor="let student of students[i]; let k = index; trackBy: onTrackBy">{{ student.username }}</p>
+    <div class="d-flex align-items-center" *ngFor="let student of students[i]; let k = index; trackBy: onTrackBy">
+        <p class="text-secondary m-0 ms-2">{{
+            student.username }}</p>
+        <button *ngIf="removeStudentsFlag === i" class="btn-close ms-2" (click)="kickStudent(i, k)"></button>
+    </div>
     <div class="d-flex justify-content-end align-items-center mt-2">
         <button class="btn btn-success" (click)="addTest($event)" [attr.discipline-id]="i">Create test</button>
-        <img src="./assets/png/add-user.png" class="add_img ms-3" [attr.discipline-id]="i" (click)="addStudent($event)" alt="">
+        <img src="./assets/png/add-user.png" class="add_img ms-3" (click)="addStudent(i)" alt="">
+        <img src="./assets/png/delete.png" class="add_img ms-3" (click)="removeStudents(i)" alt="">
     </div>
-    
+</div>
+
+<!-- Settings -->
+<div class="settings__container mt-3">
+    <button class="btn btn-outline-success" type="button" (click)="showSettings()">Settings</button>
+    <div *ngIf="settingsShown" class="card card-body mt-2">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex align-items-center">
+                <select class="form-select me-2" name="disciplinesDeleteList" id="disciplinesDeleteList" [(ngModel)]="deleteDisciplineOption">
+                    <option value="" disabled selected>Select discipline</option>
+                    <option *ngFor="let discipline of disciplines" value="{{discipline._id}}">{{discipline.name}}</option>
+                </select>
+                <button class="btn btn-danger text-nowrap" type="button" (click)="deleteDiscipline()">Delete discipline</button>
+            </li>
+        </ul>
+    </div>
 </div>
 
 <!-- Modal -->
 <div class="modal_window" id="staticBackdrop" *ngIf="boolAddStudent">
-    <form action="" class="modal__form" (ngSubmit) = "studentSubmit()">
+    <form action="" class="modal__form" (ngSubmit)="studentSubmit()">
         <div class="modal-header d-flex align-items-center">
             <h3 class="modal__title m-0">Enter student's email</h3>
             <button class="btn-close ms-2" (click)="closeAddStudent()"></button>
         </div>
         <div class="d-flex justify-content-between mt-2">
-            <input type="email" placeholder="Email" class="modal__input" name="studentEmail"  #emailInput="ngModel" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" [(ngModel)]="studentEmail" required>
-            <button type="submit" class="modal__button btn btn-success" [disabled]="emailInput.invalid && emailInput.touched">Add</button>
+            <input type="email" placeholder="Email" class="modal__input" name="studentEmail" #emailInput="ngModel"
+                required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" [(ngModel)]="studentEmail" required>
+            <button type="submit" class="modal__button btn btn-success"
+                [disabled]="emailInput.invalid && emailInput.touched">Add</button>
         </div>
         <p class="text-danger" *ngIf="emailInput.invalid && emailInput.touched">Incorrect email format</p>
         <p class="text-danger" id="nameError">{{ studentError }}</p>
@@ -36,18 +60,22 @@
 </div>
 
 <div class="modal_window" id="staticBackdrop" *ngIf="boolAddUser">
-    <form action="" class="modal__form" (ngSubmit) = "userSubmit()">
+    <form action="" class="modal__form" (ngSubmit)="userSubmit()">
         <div class="modal-header d-flex align-items-center">
             <h3 class="modal__title">Enter student's data</h3>
             <button class="btn-close ms-2" (click)="closeAddUser()"></button>
         </div>
         <div class="d-flex flex-column align-items-end mt-2">
-            <input type="text" placeholder="Name" class="modal__input_wide" name="userName" [(ngModel)]="userName" required>
-            <input type="email" placeholder="Email" class="modal__input_wide mt-2" name="userEmail" #emailInput="ngModel" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"  [(ngModel)]="userEmail">
-            <input type="text" placeholder="Password" class="modal__input_wide mt-2" name="userPassword" [(ngModel)]="userPassword" required>
+            <input type="text" placeholder="Name" class="modal__input_wide" name="userName" [(ngModel)]="userName"
+                required>
+            <input type="email" placeholder="Email" class="modal__input_wide mt-2" name="userEmail"
+                #emailInput="ngModel" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" [(ngModel)]="userEmail">
+            <input type="text" placeholder="Password" class="modal__input_wide mt-2" name="userPassword"
+                [(ngModel)]="userPassword" required>
             <p class="text-danger" id="nameError">{{ userError }}</p>
             <p class="text-danger" *ngIf="emailInput.invalid && emailInput.touched">Incorrect email format</p>
-            <button type="submit" class="modal__button btn btn-success mt-2" [disabled]="emailInput.invalid && emailInput.touched">Add</button>
+            <button type="submit" class="modal__button btn btn-success mt-2"
+                [disabled]="emailInput.invalid && emailInput.touched">Add</button>
         </div>
     </form>
 </div>
@@ -59,7 +87,8 @@
             <button class="btn-close ms-2" (click)="closeMarks()"></button>
         </div>
         <div class="d-flex flex-column align-items-start mt-2">
-            <p class="m-0" *ngFor="let student of students[disId]; let i = index; trackBy: onTrackBy">{{ student.username }} Mark: (mark)</p>
+            <p class="m-0" *ngFor="let student of students[disId]; let i = index; trackBy: onTrackBy">{{
+                student.username }} Mark: (mark)</p>
         </div>
         <button class="btn btn-outline-success mt-2" (click)="closeMarks()">Close</button>
     </div>

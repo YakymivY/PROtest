@@ -31,6 +31,10 @@ export class TeacherComponent implements OnInit {
   boolShowMarks: boolean = false;
   disId: number;
 
+  settingsShown: boolean = false;
+  deleteDisciplineOption: string = '';
+  removeStudentsFlag: number = NaN;
+
   constructor(private service: DisciplineService, private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
@@ -120,9 +124,9 @@ export class TeacherComponent implements OnInit {
 
   //adding new student to a discipline
 
-  addStudent(event: any) {
+  addStudent(i: any) {
     this.boolAddStudent = true;
-    this.disIndex = event.target.getAttribute("discipline-id");
+    this.disIndex = i;
   }
 
   studentSubmit() {
@@ -150,6 +154,23 @@ export class TeacherComponent implements OnInit {
     }
   }
 
+  removeStudents(i: number) {
+    Number.isNaN(this.removeStudentsFlag) ? this.removeStudentsFlag = i : this.removeStudentsFlag = NaN;
+  }
+
+  kickStudent(d: number, s: number) {
+    const d_id = this.disciplines[d]._id;
+    const s_id = this.disciplines[d].students[s];
+    this.service.removeStudent(d_id, s_id).subscribe(
+      (response: any) => {
+        console.log('success', response);
+      },
+      error => {
+        console.log("ERROR: ", error);
+      }
+    );
+  }
+
   //marks
 
   showMarks(event: any) {
@@ -170,6 +191,30 @@ export class TeacherComponent implements OnInit {
 
   closeMarks() {
     this.boolShowMarks = false;
+  }
+
+  //settings
+
+  showSettings () {
+    this.settingsShown = !this.settingsShown;
+  }
+
+  deleteDiscipline () {
+    if (!this.deleteDisciplineOption) alert("Error. Select the discipline to delete")
+    else {
+      this.service.deleteDiscipline(this.deleteDisciplineOption).subscribe(
+        (response: any) => {
+          const indexToDelete = this.disciplines.findIndex((item: any) => item._id === this.deleteDisciplineOption);
+          if (indexToDelete !== -1) {
+            this.disciplines.splice(indexToDelete, 1);
+          }
+          console.log(response);
+        },
+        error => {
+          console.log("ERROR: ", error)
+        }
+      );
+    }
   }
 
 }
